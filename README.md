@@ -1,62 +1,79 @@
 # EnemMetrics
 
 ## Status do Projeto
-**Em Desenvolvimento (Prova de Conceito)**
+**Tracer Bullet 1: Concluída**
 
-Este projeto utiliza a abordagem "Tracer Bullet" para validar a arquitetura e o fluxo de dados antes de processar a base completa. O foco atual é a funcionalidade de comparação de notas por renda.
+Este projeto utiliza a abordagem "Tracer Bullet" (Projétil Rastreador) para validar a arquitetura e o fluxo de dados antes de processar a base completa do ENEM. O objetivo desta primeira etapa foi estabelecer a comunicação entre um backend Python e um frontend React, exibindo dados mockados de comparação de notas por renda.
 
-## Funcionalidade Atual
-- **Comparação de Notas por Renda**: Geração de dados mockados simulando a distribuição de notas do ENEM para diferentes faixas de renda.
-- **API Backend**: Endpoint funcional que retorna dados prontos para consumo por gráficos no frontend.
+## Funcionalidades Implementadas
+- **Backend API**: Endpoint funcional que gera dados mockados simulando a desigualdade de notas por faixa de renda.
+- **Frontend Dashboard**: Interface React que consome a API e renderiza um gráfico de barras interativo.
+- **Integração**: Comunicação CORS configurada entre FastAPI e React.
 
-## Tecnologias
-- Python 3.x
-- FastAPI
-- Uvicorn
+## Preview
+![Preview do Gráfico](./assets/graph.png)
+
+## Tecnologias Utilizadas
+- **Backend**: Python 3.x, FastAPI, Uvicorn.
+- **Frontend**: React (Vite), Chart.js, react-chartjs-2, Axios.
+- **Estilização**: CSS Puro (Flexbox), seguindo princípios de design minimalista.
+
+## Pré-requisitos
+- Python 3.10+ instalado.
+- Node.js (npm) instalado.
 
 ## Como Executar
 
-1. **Instale as dependências**:
-   ```bash
-   pip install "fastapi[standard]"
-   ```
+Este projeto requer que o Backend e o Frontend rodem simultaneamente em terminais separados.
 
-2. **Execute o servidor**:
-   ```bash
-   fastapi dev main.py
-   ```
+### 1. Backend (FastAPI)
+No terminal raiz do projeto:
 
-3. **Acesse a documentação interativa (OpenAPI)**:
-   - URL: `http://127.0.0.1:8000/docs`
+```bash
+# Instale as dependências (inclui uvicorn)
+pip install "fastapi[standard]"
 
-## Endpoints Disponíveis
+# Execute o servidor
+fastapi dev main.py
+```
+O servidor iniciará em `http://127.0.0.1:8000`.
 
-GET `/api/comparacao/nota-renda`
+### 2. Frontend (React)
+Em um novo terminal, acesse a pasta do frontend (se houver uma) ou a raiz onde está o `package.json`:
 
-Retorna um JSON com a distribuição percentual de notas por faixa de renda.
+```bash
+# Instale as dependências
+npm install
+
+# Execute a aplicação
+npm run dev
+```
+A aplicação iniciará em `http://localhost:5173`.
+
+## Estrutura de Pastas (Simplificada)
+- `main.py`: Configuração do FastAPI, CORS e lógica de mock de dados.
+- `src/components/GraficoEnem.jsx`: Componente React responsável por buscar dados e renderizar o gráfico.
+- `src/App.jsx`: Layout principal e centralização do conteúdo.
+
+## Endpoints da API
+
+`GET /api/comparacao/nota-renda`
+
+Retorna um JSON estruturado para gráficos, contendo labels (faixas de nota) e datasets (rendas).
 
 **Exemplo de Resposta:**
 ```json
 {
   "labels": ["500-599", "600-699", "700-799", "800-899", "900-999"],
   "datasets": [
-    {
-      "label": "Renda Alta",
-      "data": [0, 25.05, 25.61, 24.54, 24.8]
-    },
-    {
-      "label": "Renda Média",
-      "data": [24.75, 25.74, 25.71, 23.8, 0]
-    },
-    {
-      "label": "Renda Baixa",
-      "data": [32.14, 33.3, 34.57, 0, 0]
-    }
+    { "label": "Renda Alta", "data": [0, 25.05, 25.61, 24.54, 24.8] },
+    { "label": "Renda Média", "data": [24.75, 25.74, 25.71, 23.8, 0] },
+    { "label": "Renda Baixa", "data": [32.14, 33.3, 34.57, 0, 0] }
   ]
 }
 ```
 
-## Próximos Passos
-- Criar interface frontend para exibição do gráfico.
-- Substituir dados mockados pela leitura real do arquivo CSV.
-- Implementar novos filtros de análise (ex: região, escola pública/privada).
+## Próximos Passos (Roadmap)
+- **Dados Reais**: Substituir a função `generate_mock_data` pela leitura do arquivo CSV real do ENEM.
+- **Deploy**: Configurar ambiente de produção (Docker/Cloud).
+- **Novos Filtros**: Adicionar filtros para região, escola pública/privada e ano.
