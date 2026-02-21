@@ -1,7 +1,16 @@
 import random
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class Estudante:
     def __init__(self, id, renda_classificada, nota_matematica):
@@ -13,7 +22,6 @@ def generate_mock_data(size=10000):
     estudantes = []
     for i in range(size):
         renda_val = random.randint(0, 20000)
-        
         if renda_val > 10000:
             renda_classificada = "Renda Alta"
             nota_matematica = random.uniform(600, 1000)
@@ -23,7 +31,6 @@ def generate_mock_data(size=10000):
         else:
             renda_classificada = "Renda Baixa"
             nota_matematica = random.uniform(300, 800)
-            
         estudantes.append(Estudante(i+1, renda_classificada, round(nota_matematica, 2)))
     return estudantes
 
@@ -37,7 +44,6 @@ def classificar_nota(nota):
 
 def calcular_porcentagens(estudantes):
     labels = ["500-599", "600-699", "700-799", "800-899", "900-999"]
-    
     dados = {
         "labels": labels,
         "datasets": [
@@ -46,12 +52,10 @@ def calcular_porcentagens(estudantes):
             {"label": "Renda Baixa", "data": [0] * 5}
         ]
     }
-    
     renda_map = {"Renda Alta": 0, "Renda Média": 1, "Renda Baixa": 2}
-
+    
     for estudante in estudantes:
         faixa_nota = classificar_nota(estudante.nota_matematica)
-        
         if faixa_nota:
             try:
                 idx_nota = labels.index(faixa_nota)
@@ -59,12 +63,11 @@ def calcular_porcentagens(estudantes):
                 dados["datasets"][idx_renda]["data"][idx_nota] += 1
             except ValueError:
                 pass
-
+                
     for dataset in dados["datasets"]:
         total = sum(dataset["data"])
         if total > 0:
             dataset["data"] = [round((x / total) * 100, 2) for x in dataset["data"]]
-            
     return dados
 
 @app.get("/")
@@ -79,4 +82,4 @@ async def comparacao_notas_rendas():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000) 
+    uvicorn.run(app, host="0.0.0.0", port=8000)
