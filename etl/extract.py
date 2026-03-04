@@ -1,6 +1,7 @@
 import polars as pl
+from transform import transformar_dados
 
-def extrair_dados_enem():
+def extrair_dados():
     caminho_arquivo = "./data/MICRODADOS_ENEM_2023.csv"
 
     df_extraido = pl.read_csv(
@@ -25,7 +26,8 @@ def extrair_dados_enem():
     return df_extraido
 
 if __name__ == "__main__":
-    df = extrair_dados_enem()
+    df = extrair_dados()
+    df_transformado = transformar_dados(df)
 
     print("Extração concluída com sucesso!")
-    print(df.head())
+    print(df_transformado.head())
