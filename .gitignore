@@ -218,3 +218,6 @@ __marimo__/
 # VS Code
 .vscode/
 *.code-workspace
+
+# paths
+/data
