@@ -12,11 +12,12 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./sql_scripts:/docker-entrypoint-initdb.d
     networks:
-      - backend-net
+      - enem_metrics_network
 
 volumes:
   postgres_data:
 
 networks:
-  backend-net:
+  enem_metrics_network:
