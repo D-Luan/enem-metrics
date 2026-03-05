@@ -1,6 +1,6 @@
 import polars as pl
 import adbc_driver_postgresql.dbapi as dbapi
-from config import get_postgres_uri
+from etl.config import get_postgres_uri
 
 def carregar_dados(df: pl.DataFrame):
     uri = get_postgres_uri()
