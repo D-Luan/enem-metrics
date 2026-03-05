@@ -1,5 +1,4 @@
 import polars as pl
-from etl.load import carregar_dados
 
 def filtrar_dados(df: pl.DataFrame):
     df_filtrado = df.filter(
@@ -90,6 +89,5 @@ if __name__ == "__main__":
     })
 
     df_transformado = transformar_dados(df_mock)
-    carregar_dados(df_transformado)
 
     print(df_transformado)
