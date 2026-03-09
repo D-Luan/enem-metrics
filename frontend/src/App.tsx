@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
+import { IncomeChart } from "./components/charts/IncomeChart";
 
-interface MetricaRenda {
+export interface MetricaRenda {
   faixa_nota: string;
   qtd_renda_baixa: number;
   qtd_renda_media: number;
@@ -49,9 +50,11 @@ function App() {
   
   return (
     <Layout>
-      <div className="w-full max-w-4xl mx-auto h-96 bg-white border-2 border-zinc-700 rounded-lg flex flex-col items-center justify-center">
+      <div className="w-full max-w-4xl mx-auto min-h-96 bg-zinc-50 border border-zinc-200 rounded-lg p-4 flex flex-col justify-center">
         {loading && (
-          <p className="font-medium text-lg animate-pulse text-blue-500">Carregando métricas do ENEM</p>
+          <div className="flex justify-center items-center h-full">
+             <p className="font-medium text-lg animate-pulse text-blue-500">Carregando métricas do ENEM...</p>
+          </div>
         )}
 
         {error && (
@@ -62,9 +65,10 @@ function App() {
         )} 
 
         {!loading && !error && (
-          <div className="text-center flex flex-col items-center">
-            <p className="font-medium text-lg text-zinc-800">Dados carregados com sucesso!</p>
-            <p className="text-sm mt-2 text-zinc-500">{dados.length} faixas de notas da API recebidas.</p>
+          <div className="w-full">
+            <div className="w-full max-w-4xl"> 
+              <IncomeChart dados={dados} />
+            </div>
           </div>
         )}
       </div>
