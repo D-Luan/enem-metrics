@@ -1,7 +1,7 @@
 import polars as pl
 
 def extrair_dados():
-    caminho_arquivo = "./data/MICRODADOS_ENEM_2023.csv"
+    caminho_arquivo = "./etl/data/MICRODADOS_ENEM_2023.csv"
 
     df_extraido = pl.read_csv(
         caminho_arquivo,

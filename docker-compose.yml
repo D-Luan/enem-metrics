@@ -16,6 +16,22 @@ services:
     networks:
       - enem_metrics_network
 
+  etl:
+    image: enem-metrics-etl
+    container_name: etl_enem_metrics
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_PORT: 5432
+      DB_HOST: database
+    volumes:
+      - ./etl/data:/app/data
+    networks:
+      - enem_metrics_network
+    depends_on:
+      - database
+
 volumes:
   postgres_data:
 

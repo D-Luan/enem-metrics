@@ -220,4 +220,4 @@ __marimo__/
 *.code-workspace
 
 # paths
-/data
+etl/data
