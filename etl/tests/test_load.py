@@ -2,7 +2,7 @@ import pytest
 import polars as pl
 import adbc_driver_postgresql.dbapi as dbapi
 from etl.load import carregar_dados
-from etl.config import get_postgres_uri
+from etl.config import get_postgres_uri, conexao_postgres
 
 @pytest.fixture
 def setup_banco_teste(monkeypatch):
@@ -14,8 +14,7 @@ def setup_banco_teste(monkeypatch):
 
     uri = get_postgres_uri()
     
-    conn = dbapi.connect(uri)
-    try:
+    with conexao_postgres(uri) as conn:
         with conn.cursor() as cur:
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS microdados_enem_tratado (
@@ -25,18 +24,13 @@ def setup_banco_teste(monkeypatch):
                 );
             """)
         conn.commit()
-    finally:
-        conn.close()
     
     yield uri 
     
-    conn = dbapi.connect(uri)
-    try:
+    with conexao_postgres(uri) as conn:
         with conn.cursor() as cur:
             cur.execute("DROP TABLE IF EXISTS microdados_enem_tratado;")
         conn.commit()
-    finally:
-        conn.close()
 
 def test_carregar_dados_deve_inserir_dataframe_no_postgres(setup_banco_teste):
     df_mock = pl.DataFrame({
@@ -47,13 +41,10 @@ def test_carregar_dados_deve_inserir_dataframe_no_postgres(setup_banco_teste):
 
     carregar_dados(df_mock)
 
-    conn = dbapi.connect(setup_banco_teste)
-    try:
+    with conexao_postgres(setup_banco_teste) as conn:
         with conn.cursor() as cur:
             cur.execute("SELECT * FROM microdados_enem_tratado ORDER BY id_estudante;")
             resultados = cur.fetchall()
-    finally:
-        conn.close()
 
     assert len(resultados) == 2
     assert resultados[0][0] == 101
