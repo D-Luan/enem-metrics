@@ -2,3 +2,4 @@ polars
 adbc-driver-postgresql
 python-dotenv
 pytest
+pyarrow
