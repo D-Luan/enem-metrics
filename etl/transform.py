@@ -52,7 +52,7 @@ def categorizar_renda(df: pl.DataFrame):
         pl.when(pl.col("Q006").is_in(["A", "B", "C", "D"])).then(pl.lit("Renda Baixa"))
         .when(pl.col("Q006").is_in(["E", "F", "G", "H", "I", "J", "K"])).then(pl.lit("Renda Média"))
         .when(pl.col("Q006").is_in(["L", "M", "N", "O", "P", "Q"])).then(pl.lit("Renda Alta"))
-        .otherwise(pl.lit("Q006"))
+        .otherwise(pl.col("Q006"))
         .alias("renda_categoria")
     )
 
