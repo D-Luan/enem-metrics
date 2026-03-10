@@ -15,24 +15,28 @@ def setup_banco_teste(monkeypatch):
     uri = get_postgres_uri()
     
     conn = dbapi.connect(uri)
-    with conn.cursor() as cur:
-        cur.execute("""
-            CREATE TABLE IF NOT EXISTS microdados_enem_tratado (
-                id_estudante BIGINT,
-                nota_media DOUBLE PRECISION,
-                renda_categoria TEXT
-            );
-        """)
-    conn.commit()
-    conn.close()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS microdados_enem_tratado (
+                    id_estudante BIGINT,
+                    nota_media DOUBLE PRECISION,
+                    renda_categoria TEXT
+                );
+            """)
+        conn.commit()
+    finally:
+        conn.close()
     
     yield uri 
     
     conn = dbapi.connect(uri)
-    with conn.cursor() as cur:
-        cur.execute("DROP TABLE IF EXISTS microdados_enem_tratado;")
-    conn.commit()
-    conn.close()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("DROP TABLE IF EXISTS microdados_enem_tratado;")
+        conn.commit()
+    finally:
+        conn.close()
 
 def test_carregar_dados_deve_inserir_dataframe_no_postgres(setup_banco_teste):
     df_mock = pl.DataFrame({
@@ -44,10 +48,12 @@ def test_carregar_dados_deve_inserir_dataframe_no_postgres(setup_banco_teste):
     carregar_dados(df_mock)
 
     conn = dbapi.connect(setup_banco_teste)
-    with conn.cursor() as cur:
-        cur.execute("SELECT * FROM microdados_enem_tratado ORDER BY id_estudante;")
-        resultados = cur.fetchall()
-    conn.close()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("SELECT * FROM microdados_enem_tratado ORDER BY id_estudante;")
+            resultados = cur.fetchall()
+    finally:
+        conn.close()
 
     assert len(resultados) == 2
     assert resultados[0][0] == 101

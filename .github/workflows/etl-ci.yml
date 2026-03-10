@@ -45,11 +45,11 @@ jobs:
           pip install -r etl/requirements.txt
           pip install pytest pytest-cov
       
-      - name: Rodar Testes Unitários de Qualidade de Dados
+      - name: Rodar Testes Automatizados
         env: 
           PYTHONPATH: .
         run: |
-          pytest etl/tests/
+          pytest etl/tests/ -v -s
       
       - name: Testar a construção da Imagem Docker
         working-directory: ./etl
