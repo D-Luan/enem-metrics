@@ -1,4 +1,6 @@
 import os
+import adbc_driver_postgresql.dbapi as dbapi
+from contextlib import contextmanager
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -24,3 +26,11 @@ def get_db_config():
 def get_postgres_uri():
     conf = get_db_config()
     return f"postgresql://{conf["user"]}:{conf["password"]}@{conf["host"]}:{conf["port"]}/{conf["db_name"]}" 
+
+@contextmanager
+def conexao_postgres(uri):
+    try:
+        conn = dbapi.connect(uri)
+        yield conn
+    finally:
+        conn.close()
