@@ -9,7 +9,7 @@ def setup_banco_teste(monkeypatch):
     monkeypatch.setenv("DB_USER", "postgres")
     monkeypatch.setenv("DB_PASSWORD", "postgres")
     monkeypatch.setenv("DB_NAME", "enem_teste")
-    monkeypatch.setenv("DB_HOST", "localhost")
+    monkeypatch.setenv("DB_HOST", "127.0.0.1")
     monkeypatch.setenv("DB_PORT", "5432")
 
     uri = get_postgres_uri()
