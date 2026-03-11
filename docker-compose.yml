@@ -24,13 +24,13 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: ${DB_NAME}
       DB_PORT: 5432
-      DB_HOST: database
+      DB_HOST: ${DB_HOST}
     volumes:
       - ./etl/data:/app/data
     networks:
       - enem_metrics_network
-    depends_on:
-      - database
+    #depends_on:
+      #- database
 
 volumes:
   postgres_data:
