@@ -3,7 +3,7 @@ from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from psycopg_pool import AsyncConnectionPool
 from psycopg import AsyncConnection
-from config import get_postgres_uri
+from src.config import get_postgres_uri
 from src import database
 from src.api.routes_metricas import router as metricas_router
 
