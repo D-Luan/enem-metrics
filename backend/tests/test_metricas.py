@@ -36,7 +36,7 @@ def test_get_health_deve_retornar_status_200_e_banco_conectado_true():
 
 def test_get_metricas_renda_deve_retornar_agrupamento_matematico_correto_dos_microdados_mockados():
     with TestClient(app) as client:
-        resposta = client.get("/metricas/renda")
+        resposta = client.get("/api/metricas/renda")
         assert resposta.status_code == 200
 
         dados = resposta.json()["dados"]
