@@ -25,7 +25,8 @@ function App() {
   useEffect(() => {
     async function buscarMetricas() {
       try {
-        const resposta = await fetch("http://127.0.0.1:8000/api/metricas/renda");
+        const API_URL = import.meta.env.VITE_API_URL;
+        const resposta = await fetch(`${API_URL}/api/metricas/renda`);
 
         if (!resposta.ok) {
           throw new Error("Falha ao buscar os dados da API");
