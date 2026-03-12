@@ -2,13 +2,13 @@ name: ETL Pipeline CI
 
 on:
   push:
-    branches: [ "main", "master" ]
     paths: 
       - 'etl/**'
+      - '.github/workflows/etl-ci.yml'
   pull_request: 
-    branches: [ "main", "master" ]
     paths: 
       - 'etl/**'
+      - '.github/workflows/etl-ci.yml'
 
 jobs:
   test-and-build:
