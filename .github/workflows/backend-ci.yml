@@ -1,0 +1,58 @@
+name: Backend CI - Integracao
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+  pull_request:
+    paths:
+      - 'backend/**'
+
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres: 
+        image: postgres:15
+        env:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: test_db
+        ports: 
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+        
+      - name: Configurar Python 3.12
+        uses: actions/setup-python@v5
+        with: 
+          python-version: '3.12'
+          cache: 'pip'
+            
+      - name: Instalar Dependências
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest httpx
+            
+      - name: Rodar Testes Automatizados
+        env: 
+          DB_USER: test_user
+          DB_PASSWORD: test_password
+          DB_NAME: test_db
+          DB_HOST: localhost
+          DB_PORT: 5432
+        run: |
+          cd backend
+          pytest tests/ -v
+

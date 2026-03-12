@@ -24,4 +24,9 @@ def get_db_config():
 def get_postgres_uri():
     conf = get_db_config()
 
-    return f"postgresql://{conf["user"]}:{conf["password"]}@{conf["host"]}:{conf["port"]}/{conf["db_name"]}?sslmode=require" 
+    uri = f"postgresql://{conf["user"]}:{conf["password"]}@{conf["host"]}:{conf["port"]}/{conf["db_name"]}" 
+
+    if conf["host"] != "localhost":
+        uri += "?sslmode=require"
+    
+    return uri
