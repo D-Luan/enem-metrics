@@ -56,5 +56,5 @@ jobs:
           DB_PORT: 5432
         run: |
           cd backend
-          pytest tests/ -v
+          pytest -m pytest tests/ -v
 
