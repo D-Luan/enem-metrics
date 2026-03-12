@@ -10,7 +10,7 @@ TEST_DB_URL = get_postgres_uri()
 @pytest.fixture(scope='module', autouse=True)
 def setup_banco_teste():
     with psycopg.connect(TEST_DB_URL, autocommit=True) as conn:
-        with conn.cursor as cur:
+        with conn.cursor() as cur:
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS microdados_enem_tratado (
                     id_estudante BIGINT PRIMARY KEY,
