@@ -60,7 +60,7 @@ function App() {
 
         {error && (
           <div className="text-center">
-            <p className="font-medium text-lg text-red-500">Ocorre um erro.</p>
+            <p className="font-medium text-lg text-red-500">Ocorreu um erro.</p>
             <p className="text-sm text-red-400 mt-1">{error}</p>
           </div>
         )} 
