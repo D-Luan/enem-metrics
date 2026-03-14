@@ -1,6 +1,5 @@
 import polars as pl
-import adbc_driver_postgresql.dbapi as dbapi
-from etl.config import get_postgres_uri, conexao_postgres
+from utils.config import get_postgres_uri, conexao_postgres
 
 def carregar_dados(df: pl.DataFrame):
     uri = get_postgres_uri()
@@ -8,12 +7,12 @@ def carregar_dados(df: pl.DataFrame):
     with conexao_postgres(uri) as conn:
         with conn.cursor() as cur:
             print("Limpando dados da tabela com o TRUNCATE...")
-            cur.execute("TRUNCATE TABLE microdados_enem_tratado;")
+            cur.execute("TRUNCATE TABLE mart_desempenho_por_renda;")
         conn.commit()
         
     print("Inserindo novos dados a tabela...")
     df.write_database(
-        table_name="microdados_enem_tratado",
+        table_name="mart_desempenho_por_renda",
         connection=uri,
         engine="adbc",
         if_table_exists="append"

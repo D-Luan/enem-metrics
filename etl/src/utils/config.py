@@ -29,8 +29,10 @@ def get_postgres_uri():
 
 @contextmanager
 def conexao_postgres(uri):
+    conn = None
     try:
         conn = dbapi.connect(uri)
         yield conn
     finally:
-        conn.close()
+        if conn is not None:
+            conn.close()

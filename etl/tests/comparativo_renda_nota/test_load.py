@@ -1,8 +1,8 @@
 import pytest
 import polars as pl
 import adbc_driver_postgresql.dbapi as dbapi
-from etl.load import carregar_dados
-from etl.config import get_postgres_uri, conexao_postgres
+from src.pipelines.desempenho_por_renda.load import carregar_dados
+from src.utils.config import get_postgres_uri, conexao_postgres
 
 @pytest.fixture
 def setup_banco_teste(monkeypatch):
@@ -17,7 +17,7 @@ def setup_banco_teste(monkeypatch):
     with conexao_postgres(uri) as conn:
         with conn.cursor() as cur:
             cur.execute("""
-                CREATE TABLE IF NOT EXISTS microdados_enem_tratado (
+                CREATE TABLE IF NOT EXISTS mart_desempenho_por_renda (
                     id_estudante BIGINT,
                     nota_media DOUBLE PRECISION,
                     renda_categoria TEXT
@@ -29,7 +29,7 @@ def setup_banco_teste(monkeypatch):
     
     with conexao_postgres(uri) as conn:
         with conn.cursor() as cur:
-            cur.execute("DROP TABLE IF EXISTS microdados_enem_tratado;")
+            cur.execute("DROP TABLE IF EXISTS mart_desempenho_por_renda;")
         conn.commit()
 
 def test_carregar_dados_deve_inserir_dataframe_no_postgres(setup_banco_teste):
@@ -43,7 +43,7 @@ def test_carregar_dados_deve_inserir_dataframe_no_postgres(setup_banco_teste):
 
     with conexao_postgres(setup_banco_teste) as conn:
         with conn.cursor() as cur:
-            cur.execute("SELECT * FROM microdados_enem_tratado ORDER BY id_estudante;")
+            cur.execute("SELECT * FROM mart_desempenho_por_renda ORDER BY id_estudante;")
             resultados = cur.fetchall()
 
     assert len(resultados) == 2

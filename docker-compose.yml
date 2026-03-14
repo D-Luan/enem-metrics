@@ -4,6 +4,7 @@ services:
   database:
     image: postgres:15-alpine
     container_name: postgres_enem_metrics
+    profiles: ["local"]
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -17,7 +18,8 @@ services:
       - enem_metrics_network
 
   etl:
-    image: enem-metrics-etl
+    build: ./etl
+    image: etl-enem-metrics
     container_name: etl_enem_metrics
     environment:
       DB_USER: ${DB_USER}
@@ -25,12 +27,15 @@ services:
       DB_NAME: ${DB_NAME}
       DB_PORT: 5432
       DB_HOST: ${DB_HOST}
+      DATA_PATH: /app/data/MICRODADOS_ENEM_2023.csv
     volumes:
       - ./etl/data:/app/data
     networks:
       - enem_metrics_network
-    #depends_on:
-      #- database
+    depends_on:
+      database:
+        condition: service_started
+        required: false
 
 volumes:
   postgres_data:

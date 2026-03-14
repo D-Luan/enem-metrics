@@ -1,6 +1,6 @@
 import polars as pl
 from polars.testing import assert_frame_equal
-from etl.transform import filtrar_dados, limpar_dados, calcular_nota_media, categorizar_renda, transformar_dados
+from src.pipelines.desempenho_por_renda.transform import filtrar_dados, limpar_dados, calcular_nota_media, categorizar_renda, transformar_dados
 
 def test_filtrar_dados_deve_manter_apenas_alunos_presentes_nos_4_dias():
     df_entrada = pl.DataFrame({
