@@ -1,3 +1,4 @@
+### Comandos Docker ###
 DOCKER_COMPOSE = docker compose
 ENV_LOCAL = --env-file .env.local
 ENV_NUVEM = --env-file .env
@@ -13,3 +14,10 @@ docker-down:
 
 docker-stop:
 		$(DOCKER_COMPOSE) --profile local stop
+
+### Comandos Python ETL ###
+PYTHON = env PYTHONPATH=etl/src .venv/bin/python
+TRANS_REDES = etl/src/pipelines/comparativo_redes_ensino/transform.py
+
+etl-trans-redes:
+		$(PYTHON) $(TRANS_REDES)

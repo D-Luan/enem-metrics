@@ -1,8 +1,8 @@
 import pytest
 import polars as pl
 import adbc_driver_postgresql.dbapi as dbapi
-from src.pipelines.desempenho_por_renda.load import carregar_dados
-from src.utils.config import get_postgres_uri, conexao_postgres
+from pipelines.desempenho_por_renda.load import carregar_dados
+from utils.config import get_postgres_uri, conexao_postgres
 
 @pytest.fixture
 def setup_banco_teste(monkeypatch):
