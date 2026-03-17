@@ -38,7 +38,7 @@ def agregar_desempenho(df: pl.LazyFrame) -> pl.LazyFrame:
         pl.col("NU_NOTA_CH").mean().round(2),
         pl.col("NU_NOTA_LC").mean().round(2),
         pl.col("NU_NOTA_REDACAO").mean().round(2),
-        pl.len().alias("total_alunos")
+        pl.len().cast(pl.Int32).alias("total_alunos")
     ])
 
     return df_agregado
