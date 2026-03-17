@@ -1,15 +1,23 @@
+import os
 import pytest
 import polars as pl
 import adbc_driver_postgresql.dbapi as dbapi
+from dotenv import load_dotenv
 from pipelines.desempenho_por_renda.load import carregar_dados
 from utils.config import get_postgres_uri, conexao_postgres
 
+load_dotenv()
+
 @pytest.fixture
 def setup_banco_teste(monkeypatch):
+    load_dotenv(".env.local", override=True)
+
+    db_password = os.getenv("DB_PASSWORD", "postgres")
+
     monkeypatch.setenv("DB_USER", "postgres")
-    monkeypatch.setenv("DB_PASSWORD", "postgres")
-    monkeypatch.setenv("DB_NAME", "enem_teste")
-    monkeypatch.setenv("DB_HOST", "127.0.0.1")
+    monkeypatch.setenv("DB_PASSWORD", db_password)
+    monkeypatch.setenv("DB_NAME", "metricas_teste")
+    monkeypatch.setenv("DB_HOST", "localhost")
     monkeypatch.setenv("DB_PORT", "5432")
 
     uri = get_postgres_uri()
