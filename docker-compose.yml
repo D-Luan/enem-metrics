@@ -30,6 +30,7 @@ services:
       DATA_PATH: /app/data/MICRODADOS_ENEM_2023.csv
     volumes:
       - ./etl/data:/app/data
+      - ./etl/src:/app/src
     networks:
       - enem_metrics_network
     depends_on:
