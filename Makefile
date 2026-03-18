@@ -1,10 +1,10 @@
 ### Comandos Docker ###
 DOCKER_COMPOSE = docker compose
-ENV_LOCAL = --env-file .env.local
-ENV_NUVEM = --env-file .env
+ENV_LOCAL = --env-file .env
+ENV_NUVEM = --env-file .env.prod
 
 docker-up-local:
-		$(DOCKER_COMPOSE) --profile local $(ENV_LOCAL) up --build
+		$(DOCKER_COMPOSE) --profile local $(ENV_LOCAL) up -d database
 
 docker-up-nuvem:
 		$(DOCKER_COMPOSE) $(ENV_NUVEM) up --build etl

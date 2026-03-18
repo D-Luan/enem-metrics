@@ -10,13 +10,11 @@ load_dotenv()
 
 @pytest.fixture
 def setup_banco_teste(monkeypatch):
-    load_dotenv(".env.local", override=True)
-
     db_password = os.getenv("DB_PASSWORD", "postgres")
 
     monkeypatch.setenv("DB_USER", "postgres")
     monkeypatch.setenv("DB_PASSWORD", db_password)
-    monkeypatch.setenv("DB_NAME", "metricas_teste")
+    monkeypatch.setenv("DB_NAME", "db_enem_metrics")
     monkeypatch.setenv("DB_HOST", "localhost")
     monkeypatch.setenv("DB_PORT", "5432")
 

@@ -26,7 +26,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: ${DB_NAME}
       DB_PORT: 5432
-      DB_HOST: ${DB_HOST}
+      DB_HOST: database
       DATA_PATH: /app/data/MICRODADOS_ENEM_2023.csv
     volumes:
       - ./etl/data:/app/data
