@@ -29,10 +29,15 @@ jobs:
 
             - name: Instalar dependências do ETL
               run: |
+                python -m pip install --upgrade pip
+                pip install -r etl/requirements.txt
+
+            - name: Baixar e Extrair Microdados do ENEM
+              run: |
                 mkdir -p etl/data
 
                 echo "Baixando o ZIP de 1.8GB do INEP..."
-                wget -q -O etl/data/microdados.zip "https://download.inep.gov.br/microdados/microdados_enem_2023.zip"
+                wget --progress=dot:giga -O etl/data/microdados.zip "https://download.inep.gov.br/microdados/microdados_enem_2023.zip"
 
                 echo "Extraindo apenas o CSV necessário..."
                 unzip -j etl/data/microdados.zip "DADOS/MICRODADOS_ENEM_2023.csv" -d etl/data/
