@@ -20,7 +20,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: metricas_teste
+          POSTGRES_DB: db_enem_metrics
         ports:
           - 5432:5432
         options: >-
