@@ -1,0 +1,55 @@
+name: Executar ETL em Produção (NEON)
+
+on:
+    workflow_dispatch:
+        inputs:
+            pipeline_choice:
+                description: 'Qual pipeline executar?'
+                required: true
+                default: 'todas'
+                type: choice
+                options:
+                    - renda
+                    - redes_ensino
+                    - todas
+
+jobs:
+    run-etl-production:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Baixar o código do repositório
+              uses: actions/checkout@v4
+            
+            - name: Configurar Python 3.12
+              uses: actions/setup-python@v5
+              with:
+                python-version: "3.12"
+                cache: 'pip'
+
+            - name: Instalar dependências do ETL
+              run: |
+                mkdir -p etl/data
+
+                echo "Baixando o ZIP de 1.8GB do INEP..."
+                wget -q -O etl/data/microdados.zip "https://download.inep.gov.br/microdados/microdados_enem_2023.zip"
+
+                echo "Extraindo apenas o CSV necessário..."
+                unzip -j etl/data/microdados.zip "DADOS/MICRODADOS_ENEM_2023.csv" -d etl/data/
+
+                echo "Apagando o ZIP para liberar espaço na máquina..."
+                rm etl/data/microdados.zip
+
+                echo "Download e extração concluídos com sucesso!"
+
+            - name: Executar Pipeline de Dados
+              env:
+                DB_USER: ${{ secrets.PROD_DB_USER }}
+                DB_PASSWORD: ${{ secrets.PROD_DB_PASSWORD }}
+                DB_NAME: ${{ secrets.PROD_DB_NAME }}
+                DB_HOST: ${{ secrets.PROD_DB_HOST }}
+                DB_PORT: 5432
+                DATA_PATH: ./etl/data/MICRODADOS_ENEM_2023.csv
+                PYTHONPATH: ./etl/src
+              run: |
+                python etl/src/main_etl.py --pipeline ${{ github.event.inputs.pipeline_choice }}
