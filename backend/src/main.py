@@ -11,7 +11,12 @@ from src.api.routes_metricas import router as metricas_router
 async def lifespan(app: FastAPI):
     print("Iniciando as conexões com o banco de dados...")
 
-    database.pool = AsyncConnectionPool(conninfo=get_postgres_uri(), open=False)
+    database.pool = AsyncConnectionPool(
+        conninfo=get_postgres_uri(), 
+        open=False,
+        kwargs={"prepare_threshold": None},
+        max_idle=300
+    )
     await database.pool.open()
 
     yield
