@@ -12,7 +12,7 @@ async def obter_comparacao_renda(conn: AsyncConnection) -> list[dict]:
                     WHEN nota_media < 900 THEN '800-899'
                     ELSE '900-1000'
                 END AS faixa_nota
-            FROM microdados_enem_tratado
+            FROM mart_desempenho_por_renda
         ),
         agrupamento AS (
             SELECT faixa_nota,

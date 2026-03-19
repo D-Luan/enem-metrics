@@ -1,6 +1,7 @@
 import os
 import pytest
 import psycopg
+from dotenv import load_dotenv
 from fastapi.testclient import TestClient
 from src.config import get_postgres_uri
 from src.main import app
@@ -12,19 +13,19 @@ def setup_banco_teste():
     with psycopg.connect(TEST_DB_URL, autocommit=True) as conn:
         with conn.cursor() as cur:
             cur.execute("""
-                CREATE TABLE IF NOT EXISTS microdados_enem_tratado (
+                CREATE TABLE IF NOT EXISTS mart_desempenho_por_renda (
                     id_estudante BIGINT PRIMARY KEY,
                     nota_media DOUBLE PRECISION,
                     renda_categoria VARCHAR(50)
                 )
             """)
 
-            cur.execute("TRUNCATE TABLE microdados_enem_tratado;")
+            cur.execute("TRUNCATE TABLE mart_desempenho_por_renda;")
 
-            cur.execute("INSERT INTO microdados_enem_tratado VALUES (1, 500.0, 'Renda Baixa')")
-            cur.execute("INSERT INTO microdados_enem_tratado VALUES (2, 750.0, 'Renda Alta')")
-            cur.execute("INSERT INTO microdados_enem_tratado VALUES (3, 650.0, 'Renda Média')")
-            cur.execute("INSERT INTO microdados_enem_tratado VALUES (4, 450.0, 'Renda Baixa')")
+            cur.execute("INSERT INTO mart_desempenho_por_renda VALUES (1, 500.0, 'Renda Baixa')")
+            cur.execute("INSERT INTO mart_desempenho_por_renda VALUES (2, 750.0, 'Renda Alta')")
+            cur.execute("INSERT INTO mart_desempenho_por_renda VALUES (3, 650.0, 'Renda Média')")
+            cur.execute("INSERT INTO mart_desempenho_por_renda VALUES (4, 450.0, 'Renda Baixa')")
 
     yield
 

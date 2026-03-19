@@ -15,6 +15,9 @@ docker-down:
 docker-stop:
 		$(DOCKER_COMPOSE) --profile local stop
 
+docker-test:
+		docker exec -i postgres_enem_metrics psql -U postgres -c "CREATE DATABASE db_enem_metrics_test;"
+
 ### Execução das Pipelines ###
 docker-run-renda:
 		$(DOCKER_COMPOSE) --profile local $(ENV_LOCAL) run --rm etl python src/main_etl.py --pipeline renda
